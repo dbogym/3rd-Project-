@@ -110,6 +110,70 @@
 - JUnit5 + Mockito 기반 단위 테스트
 - 통합 테스트 (SpringBootTest)
 
-## 📂 화면
+## 💢 트러블 슈팅
 
 
+### 테스트 코드 설계 시 불필요한 케이스 작성 문제
+
+#### 🚨 문제상황
+- 비즈니스 로직의 핵심이 아닌 단순 증감 테스트를 중복으로 작성
+- 실제 검증이 필요한 성공/실패 조건보다 세부적인 값 변화에 집중
+- 테스트 코드 유지보수 비용 증가 및 핵심 테스트 케이스 파악 어려움
+  ```
+    // Before - 불필요한 증감 테스트 중복
+    @Test
+    @DisplayName("총 휴가일수 증가 업데이트")
+    void updateTotalCountIncrease() {
+        VacationInfo vacationInfo = new VacationInfo(15.0, 5.0, "01", 1L);
+        double newTotalCount = 20.0;
+        
+        VacationInfoLog log = vacationInfo.updateTotalCount(newTotalCount);
+        
+        assertThat(vacationInfo.getTotalCount()).isEqualTo(20.0);
+        assertThat(log.getTotalCount()).isEqualTo(20.0);
+    }
+
+    @Test
+    @DisplayName("총 휴가일수 감소 업데이트")
+    void updateTotalCountDecrease() {
+        VacationInfo vacationInfo = new VacationInfo(15.0, 5.0, "01", 1L);
+        double newTotalCount = 12.0;
+        
+        VacationInfoLog log = vacationInfo.updateTotalCount(newTotalCount);
+        
+        assertThat(vacationInfo.getTotalCount()).isEqualTo(12.0);
+        assertThat(log.getTotalCount()).isEqualTo(12.0);
+    }
+    ```
+#### 🔧 해결과정
+1. 테스트 목적 재정립: 업데이트 성공/실패가 핵심, 값의 증감은 부차적
+2. 엣지 케이스 중심의 테스트 설계로 전환:
+    ```
+    // After - 핵심 비즈니스 로직 검증
+    @Test
+    @DisplayName("총 휴가일수 업데이트 성공")
+    fun update_total_count_success() {
+        val newTotalCount = 5.0
+        val vacationInfo = VacationInfo(15.0, 5.0, "01", 1L)
+        
+        val log = vacationInfo.updateTotalCount(newTotalCount)
+        
+        assertThat(vacationInfo.totalCount).isEqualTo(newTotalCount)
+        assertThat(log.totalCount).isEqualTo(newTotalCount)
+    }
+
+    @Test
+    @DisplayName("사용일수보다 적은 총일수로 업데이트하면 예외 발생")
+    fun update_total_count_failure() {
+        val newTotalCount = 9.0
+        val vacationInfo = VacationInfo(15.0, 10.0, "01", 1L)
+        
+        assertThatThrownBy { vacationInfo.updateTotalCount(newTotalCount) }
+            .isInstanceOf(BadRequestException::class.java)
+    }
+    ```
+
+#### ✅ 결과
+- 테스트 케이스 수 감소로 유지보수 비용 절약
+- 비즈니스 로직의 핵심 검증에 집중한 의미 있는 테스트 코드 작성
+- 테스트 실행 시간 단축 및 실패 시 원인 파악 용이성 향상
