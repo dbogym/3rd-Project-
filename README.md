@@ -3,12 +3,6 @@
 **Vacation Management System**은 기업의 휴가 관리를 효율적으로 도와주는 웹 기반 서비스입니다.  
 휴가 신청, 승인, 통계 확인 등을 할 수 있는 구조로 설계되었습니다.
 
-## 🏗️ 프로젝트 구조
-
-## 시스템 구성도
-
-[시스템 구성도.pdf](https://github.com/user-attachments/files/20358583/default.pdf)
-
 ## 🛠️ 기술 스택
 
 ### Backend
@@ -84,6 +78,23 @@
 | **지훈** | - 휴가 자동 부여 <br> - 휴가 개수 관리 <br> - 월별 사용자 휴가 사용내역             |
 | **경준** | - 1, 2차 결재 <br>- 회원 승인 관리 <br>                               |
 | **세희** | - Spring Security, JWT를 통한 인증,인가 <br>- 전체 휴가 캘린더             |
+
+## 시스템 구성도
+
+[시스템 구성도.pdf](https://github.com/user-attachments/files/20358583/default.pdf)
+
+## 🔀 Flow Chart
+<details>
+<img width="1681" height="847" alt="Image" src="https://github.com/user-attachments/assets/33fdbcb9-6c80-4ff3-8d71-e0c595d0877b" />
+</details>
+
+## 💽 ERD
+<details>
+<img src="https://github.com/user-attachments/assets/f3178333-2fd1-49ad-b9c4-f47c82989a3d"/>
+</details>
+
+## 📄 API 명세서
+[\[API 명세서\] 06팀_2차 팀프로젝트.pdf](https://github.com/user-attachments/files/21157803/API.06._2.pdf)
 
 ## 📦 주요 기능
 
