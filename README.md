@@ -7,7 +7,7 @@
 
 ### Backend
 
-- Java 21
+- Kotlin
 - Spring Boot
 - Spring Security + JWT 인증
 - JPA (Hibernate)
